@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Instagram, MessageCircle, Music2, X, Send, ShoppingBag, Loader2 } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useOrderStore } from '../store/useOrderStore';
 import { captureLead } from '../lib/api/leads';
 
@@ -45,6 +46,7 @@ const SOCIAL_LINKS = [
 ];
 
 export default function ChatBot() {
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputText, setInputText] = useState('');
@@ -54,6 +56,7 @@ export default function ChatBot() {
   const sessionIdRef = useRef<string>('');
   const leadCapturedRef = useRef(false);
   const { addOrder } = useOrderStore();
+  const isMenuPage = pathname === '/menu' || pathname === '/shop';
 
   if (!sessionIdRef.current) {
     sessionIdRef.current = `chat-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -155,14 +158,18 @@ export default function ChatBot() {
   return (
     <>
       {/* Toggle Button Container */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+      <div
+        className={`fixed bottom-4 right-4 z-50 flex-col items-end pointer-events-none sm:bottom-6 sm:right-6 ${
+          isMenuPage ? 'hidden sm:flex' : 'flex'
+        }`}
+      >
         <AnimatePresence>
           {!isOpen && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className="mb-3 flex flex-col gap-2 pointer-events-auto"
+              className="mb-3 hidden flex-col gap-2 pointer-events-auto sm:flex"
             >
               {SOCIAL_LINKS.map(({ label, href, Icon }, idx) => (
                 <motion.a
@@ -190,7 +197,7 @@ export default function ChatBot() {
               initial={{ opacity: 0, x: 20, scale: 0.8 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-white text-gray-800 px-3 py-2 rounded-2xl rounded-br-none shadow-lg border border-gray-100 text-xs font-medium mb-2 mr-1 pointer-events-auto relative"
+              className="hidden bg-white text-gray-800 px-3 py-2 rounded-2xl rounded-br-none shadow-lg border border-gray-100 text-xs font-medium mb-2 mr-1 pointer-events-auto relative sm:block"
             >
               <p>👋 ¡Hola! ¿Tienes hambre?</p>
               <div className="absolute -bottom-1.5 right-0 w-2.5 h-2.5 bg-white border-r border-b border-gray-100 transform rotate-45"></div>

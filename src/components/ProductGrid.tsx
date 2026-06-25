@@ -234,6 +234,7 @@ function ToolbarToggle({
 function GalleryCard({ product, index }: { product: Product; index: number }) {
   const cutOptions = getCutOptions(product);
   const { selectedVariant, setSelectedVariantLabel, productForCart } = useSelectedVariant(product);
+  const summary = getProductSummary(product);
 
   return (
     <motion.div
@@ -269,15 +270,10 @@ function GalleryCard({ product, index }: { product: Product; index: number }) {
 
         <div className="p-3 md:p-4 flex flex-col gap-3">
           <div className="min-w-0">
-            <h3 className="font-serif text-base md:text-lg text-serana-forest leading-tight tracking-tight line-clamp-2">
+            <h3 className="font-serif text-base md:text-lg text-serana-forest leading-tight tracking-tight">
               {product.name}
             </h3>
-            <p className="mt-1 text-[11px] md:text-xs text-serana-forest/62 leading-snug line-clamp-2">{product.description}</p>
-            {product.healthBenefit && (
-              <p className="mt-2 text-[10px] md:text-[11px] text-serana-forest/58 leading-snug line-clamp-2">
-                {product.healthBenefit}
-              </p>
-            )}
+            <p className="mt-1 text-[11px] md:text-xs text-serana-forest/62 leading-snug">{summary}</p>
             <div className="mt-2 flex flex-wrap gap-1">
               {product.benefits.slice(0, 2).map((benefit) => (
                 <span key={benefit} className="inline-flex items-center gap-1 rounded-full bg-serana-olive/10 px-2 py-1 text-[8px] uppercase tracking-[0.15em] font-bold text-serana-forest/70">
@@ -312,6 +308,7 @@ function GalleryCard({ product, index }: { product: Product; index: number }) {
 function ListRow({ product, index }: { product: Product; index: number }) {
   const cutOptions = getCutOptions(product);
   const { selectedVariant, setSelectedVariantLabel, productForCart } = useSelectedVariant(product);
+  const summary = getProductSummary(product);
 
   return (
     <motion.li
@@ -319,7 +316,7 @@ function ListRow({ product, index }: { product: Product; index: number }) {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.3, delay: Math.min(index, 8) * 0.02 }}
-      className="group flex items-center gap-3 px-4 py-3 rounded-2xl bg-white border border-serana-forest/8 hover:border-serana-olive/30 hover:shadow transition-all"
+      className="group flex items-start gap-3 px-4 py-3 rounded-2xl bg-white border border-serana-forest/8 hover:border-serana-olive/30 hover:shadow transition-all"
     >
       <img
         src={product.image}
@@ -329,8 +326,8 @@ function ListRow({ product, index }: { product: Product; index: number }) {
         className="w-12 h-12 rounded-xl object-cover shrink-0 border border-serana-forest/10"
       />
       <div className="flex-1 min-w-0">
-        <p className="font-serif text-base text-serana-forest leading-tight truncate">{product.name}</p>
-        <p className="text-[11px] text-serana-forest/62 line-clamp-1">{product.description}</p>
+        <p className="font-serif text-base text-serana-forest leading-tight">{product.name}</p>
+        <p className="text-[11px] text-serana-forest/62 leading-snug">{summary}</p>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {product.benefits.slice(0, 2).map((benefit) => (
             <span key={benefit} className="text-[8px] uppercase tracking-[0.16em] font-bold text-serana-forest/50">
@@ -348,8 +345,10 @@ function ListRow({ product, index }: { product: Product; index: number }) {
         )}
         <ProductDetails product={product} />
       </div>
-      <span className="font-bold text-serana-terracotta tabular-nums whitespace-nowrap">{COP(productForCart.price)}</span>
-      <QuantityControl product={productForCart} variant="soft" />
+      <div className="flex shrink-0 flex-col items-end gap-2">
+        <span className="font-bold text-serana-terracotta tabular-nums whitespace-nowrap">{COP(productForCart.price)}</span>
+        <QuantityControl product={productForCart} variant="soft" />
+      </div>
     </motion.li>
   );
 }
@@ -428,20 +427,27 @@ function ProductVariantSelector({
 }
 
 function ProductDetails({ product, compact = false }: { product: Product; compact?: boolean }) {
-  const hasDetails = product.observation || product.portions || product.ingredients?.length;
+  const showBenefit = shouldShowHealthBenefit(product);
+  const hasDetails = showBenefit || product.observation || product.portions || product.ingredients?.length;
   if (!hasDetails) {
     return <ProductNotice compact={compact} />;
   }
 
   return (
-    <details className="mt-2 rounded-xl border border-serana-forest/8 bg-serana-cream/45 px-2.5 py-2">
-      <summary className="cursor-pointer text-[8px] uppercase tracking-[0.18em] font-bold text-serana-forest/58">
-        Ingredientes y notas
+    <details className="group mt-2 rounded-xl border border-serana-forest/8 bg-serana-cream/45 px-2.5 py-2">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-[8px] uppercase tracking-[0.18em] font-bold text-serana-forest/58 [&::-webkit-details-marker]:hidden">
+        <span>Ver información</span>
+        <span className="text-serana-olive transition-transform group-open:rotate-45">+</span>
       </summary>
       <div className="mt-2 space-y-2 text-serana-forest/62">
+        {showBenefit && (
+          <p className={`${compact ? 'text-[9px]' : 'text-[10px]'} leading-snug`}>
+            <span className="font-bold text-serana-forest/70">Beneficio:</span> {product.healthBenefit}
+          </p>
+        )}
         {product.observation && (
           <p className={`${compact ? 'text-[9px]' : 'text-[10px]'} leading-snug`}>
-            <span className="font-bold text-serana-forest/70">Obs:</span> {product.observation}
+            <span className="font-bold text-serana-forest/70">Nota:</span> {product.observation}
           </p>
         )}
         {product.portions && (
@@ -459,6 +465,37 @@ function ProductDetails({ product, compact = false }: { product: Product; compac
       </div>
     </details>
   );
+}
+
+function getProductSummary(product: Product) {
+  const source = product.description || product.healthBenefit || product.benefits.join(' y ');
+  const normalized = cleanSentence(source);
+  const firstSentence = normalized.match(/^[^.!?]+[.!?]/)?.[0] ?? normalized;
+  const [firstClause, secondClause] = firstSentence.split(',').map((part) => part.trim());
+  const combined = secondClause ? `${firstClause}, ${secondClause}` : firstClause;
+  const shortClause = firstClause.length < 32 && combined.length <= 82 ? combined : firstClause;
+
+  return ensureSentence(shortClause || normalized);
+}
+
+function shouldShowHealthBenefit(product: Product) {
+  if (!product.healthBenefit) return false;
+  if (!product.description) return true;
+  return normalizeComparable(product.healthBenefit) !== normalizeComparable(product.description);
+}
+
+function cleanSentence(value: string) {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function normalizeComparable(value: string) {
+  return cleanSentence(value).toLowerCase().replace(/[.!?]+$/g, '');
+}
+
+function ensureSentence(value: string) {
+  const clean = value.trim().replace(/\s*[.]+$/, '');
+  if (!clean) return '';
+  return /[!?]$/.test(clean) ? clean : `${clean}.`;
 }
 
 function useSelectedVariant(product: Product) {
