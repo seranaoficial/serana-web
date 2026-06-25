@@ -18,10 +18,9 @@ export const supabase = createClient(
   supabaseAnonKey ?? 'invalid',
   {
     auth: {
-      // Public site: no session persistence.
-      persistSession: false,
-      autoRefreshToken: false,
-      detectSessionInUrl: false,
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
     },
   },
 );

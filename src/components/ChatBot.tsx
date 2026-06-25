@@ -56,7 +56,7 @@ export default function ChatBot() {
   const sessionIdRef = useRef<string>('');
   const leadCapturedRef = useRef(false);
   const { addOrder } = useOrderStore();
-  const isMenuPage = pathname === '/menu' || pathname === '/shop';
+  const isCompactFlow = pathname === '/menu' || pathname === '/shop' || pathname === '/login' || pathname === '/cuenta';
 
   if (!sessionIdRef.current) {
     sessionIdRef.current = `chat-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -160,7 +160,7 @@ export default function ChatBot() {
       {/* Toggle Button Container */}
       <div
         className={`fixed bottom-4 right-4 z-50 flex-col items-end pointer-events-none sm:bottom-6 sm:right-6 ${
-          isMenuPage ? 'hidden sm:flex' : 'flex'
+          isCompactFlow ? 'hidden sm:flex' : 'flex'
         }`}
       >
         <AnimatePresence>

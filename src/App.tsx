@@ -8,6 +8,7 @@ import { Suspense, lazy, useEffect } from 'react';
 import CustomCursor from './components/CustomCursor';
 import SerenaSplash from './components/SerenaSplash';
 import ScrollVine from './components/ScrollVine';
+import { AuthProvider } from './components/AuthProvider';
 
 // Eager: tiny pages that the user lands on most often.
 import HomePage from './pages/HomePage';
@@ -18,6 +19,8 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const CommunityPage = lazy(() => import('./pages/CommunityPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const CheckoutResultPage = lazy(() => import('./pages/CheckoutResultPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const AccountPage = lazy(() => import('./pages/AccountPage'));
 const PrivacidadPage = lazy(() => import('./pages/PrivacidadPage'));
 const TerminosPage = lazy(() => import('./pages/TerminosPage'));
 const DevolucionesPage = lazy(() => import('./pages/DevolucionesPage'));
@@ -45,36 +48,40 @@ function RouteFallback() {
 
 export default function App() {
   return (
-    <Router>
-      <SerenaSplash />
-      <CustomCursor />
-      <Suspense fallback={null}>
-        <LivingBackground />
-      </Suspense>
-      <ScrollVine />
-      <ScrollToTop />
-      <Suspense fallback={null}>
-        <ChatBot />
-      </Suspense>
-      <Suspense fallback={<RouteFallback />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
-          <Route path="/menu" element={<ShopPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/nosotros" element={<AboutPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/comunidad" element={<CommunityPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/checkout/success" element={<CheckoutResultPage variant="success" />} />
-          <Route path="/checkout/failure" element={<CheckoutResultPage variant="failure" />} />
-          <Route path="/checkout/pending" element={<CheckoutResultPage variant="pending" />} />
-          <Route path="/privacidad" element={<PrivacidadPage />} />
-          <Route path="/terminos" element={<TerminosPage />} />
-          <Route path="/devoluciones" element={<DevolucionesPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <SerenaSplash />
+        <CustomCursor />
+        <Suspense fallback={null}>
+          <LivingBackground />
+        </Suspense>
+        <ScrollVine />
+        <ScrollToTop />
+        <Suspense fallback={null}>
+          <ChatBot />
+        </Suspense>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/menu" element={<ShopPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/nosotros" element={<AboutPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/comunidad" element={<CommunityPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/checkout/success" element={<CheckoutResultPage variant="success" />} />
+            <Route path="/checkout/failure" element={<CheckoutResultPage variant="failure" />} />
+            <Route path="/checkout/pending" element={<CheckoutResultPage variant="pending" />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/cuenta" element={<AccountPage />} />
+            <Route path="/privacidad" element={<PrivacidadPage />} />
+            <Route path="/terminos" element={<TerminosPage />} />
+            <Route path="/devoluciones" element={<DevolucionesPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </AuthProvider>
   );
 }

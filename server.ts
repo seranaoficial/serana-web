@@ -207,7 +207,7 @@ async function startServer() {
           baseUri: ["'self'"],
           formAction: ["'self'", 'https://*.mercadopago.com', 'https://*.mercadolibre.com'],
           frameAncestors: ["'none'"],
-          upgradeInsecureRequests: [],
+          upgradeInsecureRequests: null,
         },
       },
       // We do redirect to MP and back. crossOriginEmbedderPolicy=require-corp
@@ -215,7 +215,9 @@ async function startServer() {
       crossOriginEmbedderPolicy: false,
       // Tell the browser this isn't an HSTS-elligible site only when behind
       // HTTPS (Dokploy terminates TLS for us).
-      strictTransportSecurity: { maxAge: 60 * 60 * 24 * 180, includeSubDomains: true, preload: false },
+      strictTransportSecurity: APP_URL.startsWith('https://')
+        ? { maxAge: 60 * 60 * 24 * 180, includeSubDomains: true, preload: false }
+        : false,
     }),
   );
 

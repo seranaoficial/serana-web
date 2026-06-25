@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Menu, X, Check, MessageCircle } from 'lucide-react';
+import { Menu, X, Check, MessageCircle, UserRound } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useCartStore } from '../store/useCartStore';
 import { motion, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { MarketBasket } from './SeranaIcons';
+import { useAuth } from './AuthProvider';
 
 const WHATSAPP_URL = 'https://wa.me/573000000000';
 
@@ -14,7 +15,9 @@ export default function Navbar() {
   const toggleCart = useCartStore((state) => state.toggleCart);
   const cartItems = useCartStore((state) => state.items);
   const lastAdded = useCartStore((state) => state.lastAdded);
+  const { user, account } = useAuth();
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const firstName = account?.profile?.full_name?.split(' ')[0] ?? 'Mi cuenta';
 
   // Pulse + toast whenever the cart store fires a new "added" ping.
   const [pulseKey, setPulseKey] = useState<number | null>(null);
@@ -94,6 +97,13 @@ export default function Navbar() {
             <MessageCircle className="w-3.5 h-3.5" />
             Contáctanos
           </a>
+          <Link
+            to={user ? '/cuenta' : '/login'}
+            className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-serana-forest/10 text-serana-forest hover:border-serana-olive hover:text-serana-olive transition-colors text-[10px] font-bold tracking-[0.22em] uppercase"
+          >
+            <UserRound className="w-3.5 h-3.5" />
+            {user ? firstName : 'Ingresar'}
+          </Link>
           {/* Hours chip — implies curated availability without screaming */}
           <div className="hidden lg:flex items-center gap-2 text-[#273617]/55 text-[9px] font-bold tracking-[0.4em] uppercase">
             <span>Mar — Sáb</span>
@@ -224,6 +234,20 @@ export default function Navbar() {
                 <MessageCircle className="w-4 h-4" />
                 Contáctanos
               </motion.a>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Link
+                  to={user ? '/cuenta' : '/login'}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-serana-forest/15 text-serana-forest font-bold uppercase tracking-[0.22em] text-[11px]"
+                >
+                  <UserRound className="w-4 h-4" />
+                  {user ? 'Mi cuenta' : 'Ingresar'}
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

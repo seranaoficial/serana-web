@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   CheckCircle, Truck, ArrowLeft, ArrowRight, AlertCircle, Loader2,
-  Tag, X, Check, MapPin, User, CreditCard,
+  Tag, X, Check, MapPin, User, CreditCard, LogIn,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -13,6 +13,7 @@ import {
   type PaymentMethod, type CouponValidation,
 } from '../lib/api/orders';
 import MercadoPagoBrick from '../components/MercadoPagoBrick';
+import { useAuth } from '../components/AuthProvider';
 
 const MP_PUBLIC_KEY = import.meta.env.VITE_MP_PUBLIC_KEY ?? '';
 
@@ -67,6 +68,7 @@ const COUPON_REASONS: Record<string, string> = {
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCartStore();
+  const { user, account } = useAuth();
   const subtotal = total();
 
   const [stepIndex, setStepIndex] = useState(0); // 0..2
@@ -110,6 +112,22 @@ export default function CheckoutPage() {
   const [couponApplied, setCouponApplied] = useState<CouponValidation | null>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponOpen, setCouponOpen] = useState(false);
+
+  useEffect(() => {
+    const profile = account?.profile;
+    if (!profile) return;
+    setForm((prev) => {
+      const next = {
+        ...prev,
+        fullName: prev.fullName || profile.full_name || '',
+        phone: prev.phone || profile.phone || '',
+        email: prev.email || profile.email || user?.email || '',
+        address: prev.address || profile.address || '',
+      };
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch {/* ignore */}
+      return next;
+    });
+  }, [account?.profile, user?.email]);
 
   const update = (k: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -436,12 +454,15 @@ export default function CheckoutPage() {
             )}
 
             {stepIndex === 1 && (
-              <Step2Delivery
-                form={form}
-                update={update}
-                contactValid={contactValid}
-                addressValid={addressValid}
-              />
+              <>
+                <CheckoutAccountPrompt loggedIn={Boolean(user)} />
+                <Step2Delivery
+                  form={form}
+                  update={update}
+                  contactValid={contactValid}
+                  addressValid={addressValid}
+                />
+              </>
             )}
 
             {stepIndex === 2 && (
@@ -646,6 +667,43 @@ export default function CheckoutPage() {
 }
 
 /* ── Step components ────────────────────────────────────────────────── */
+
+function CheckoutAccountPrompt({ loggedIn }: { loggedIn: boolean }) {
+  return (
+    <div className={`mb-6 rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between ${
+      loggedIn
+        ? 'bg-serana-olive/10 border-serana-olive/25 text-serana-forest'
+        : 'bg-white/70 border-serana-forest/10 text-serana-forest'
+    }`}>
+      <div className="flex items-start gap-3">
+        <span className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+          loggedIn ? 'bg-serana-olive text-white' : 'bg-serana-forest text-serana-cream'
+        }`}>
+          {loggedIn ? <Check className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
+        </span>
+        <div>
+          <p className="font-bold text-sm">
+            {loggedIn ? 'Tu compra quedará guardada en tu cuenta.' : 'Inicia sesión para guardar tu compra.'}
+          </p>
+          <p className="text-xs text-serana-forest/55 mt-1 leading-relaxed">
+            {loggedIn
+              ? 'Serana podrá ver tu historial, datos y membresía desde Supabase.'
+              : 'También puedes continuar como invitado, pero la cuenta ayuda a llevar membresía e historial.'}
+          </p>
+        </div>
+      </div>
+      {!loggedIn && (
+        <Link
+          to="/login"
+          state={{ from: '/checkout' }}
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-serana-forest text-serana-cream text-[10px] font-bold uppercase tracking-widest hover:bg-serana-olive transition"
+        >
+          Entrar <ArrowRight className="w-3 h-3" />
+        </Link>
+      )}
+    </div>
+  );
+}
 
 type CartLine = {
   id: string;
