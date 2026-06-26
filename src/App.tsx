@@ -21,6 +21,7 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const CheckoutResultPage = lazy(() => import('./pages/CheckoutResultPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const PrivacidadPage = lazy(() => import('./pages/PrivacidadPage'));
 const TerminosPage = lazy(() => import('./pages/TerminosPage'));
 const DevolucionesPage = lazy(() => import('./pages/DevolucionesPage'));
@@ -75,6 +76,8 @@ export default function App() {
             <Route path="/checkout/pending" element={<CheckoutResultPage variant="pending" />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cuenta" element={<AccountPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/restablecer-contrasena" element={<ResetPasswordPage />} />
             <Route path="/privacidad" element={<PrivacidadPage />} />
             <Route path="/terminos" element={<TerminosPage />} />
             <Route path="/devoluciones" element={<DevolucionesPage />} />

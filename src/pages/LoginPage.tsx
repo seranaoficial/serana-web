@@ -1,17 +1,17 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Loader2, Lock, Mail, Phone, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2, Lock, Mail, Phone, UserRound } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../components/AuthProvider';
 
-type Mode = 'login' | 'register';
+type Mode = 'login' | 'register' | 'forgot';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, loading, signIn, signUp, authError, configured } = useAuth();
+  const { user, loading, signIn, signUp, requestPasswordReset, authError, configured } = useAuth();
   const [mode, setMode] = useState<Mode>('login');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
@@ -37,7 +37,7 @@ export default function LoginPage() {
           replace: true,
           state: redirectTo === '/cuenta' ? { welcomeToast: 'Qué gusto verte de nuevo en Serana.' } : undefined,
         });
-      } else {
+      } else if (mode === 'register') {
         const res = await signUp({ email, password, fullName, phone });
         if (res.needsEmailConfirmation) {
           setNotice('Te enviamos un correo de confirmación. Después de confirmarlo, vuelve a iniciar sesión.');
@@ -48,6 +48,9 @@ export default function LoginPage() {
             state: { welcomeToast: `¡Qué bueno tenerte en Serana, ${firstName}!` },
           });
         }
+      } else {
+        await requestPasswordReset(email);
+        setNotice('Te enviamos un enlace para restablecer tu contraseña. Revisa tu correo y vuelve desde ese enlace.');
       }
     } catch {
       // AuthProvider stores the readable error.
@@ -106,7 +109,7 @@ export default function LoginPage() {
             {([
               ['login', 'Entrar'],
               ['register', 'Crear cuenta'],
-            ] as Array<[Mode, string]>).map(([value, label]) => (
+            ] as Array<[Exclude<Mode, 'forgot'>, string]>).map(([value, label]) => (
               <button
                 key={value}
                 type="button"
@@ -128,6 +131,15 @@ export default function LoginPage() {
             </div>
           ) : (
             <form onSubmit={submit} className="space-y-4">
+              {mode === 'forgot' && (
+                <div className="rounded-2xl bg-serana-olive/10 border border-serana-olive/20 p-4">
+                  <p className="font-serif text-xl text-serana-forest mb-1">Restablece tu contraseña</p>
+                  <p className="text-sm text-serana-forest/65 leading-relaxed">
+                    Escribe el correo de tu cuenta y te enviaremos un enlace seguro para crear una nueva contraseña.
+                  </p>
+                </div>
+              )}
+
               {mode === 'register' && (
                 <>
                   <FieldIcon Icon={UserRound}>
@@ -162,17 +174,32 @@ export default function LoginPage() {
                   className="w-full bg-transparent outline-none"
                 />
               </FieldIcon>
-              <FieldIcon Icon={Lock}>
-                <input
-                  required
-                  minLength={6}
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Contraseña"
-                  className="w-full bg-transparent outline-none"
-                />
-              </FieldIcon>
+
+              {mode !== 'forgot' && (
+                <FieldIcon Icon={Lock}>
+                  <input
+                    required
+                    minLength={6}
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Contraseña"
+                    className="w-full bg-transparent outline-none"
+                  />
+                </FieldIcon>
+              )}
+
+              {mode === 'login' && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => { setMode('forgot'); setNotice(null); }}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-serana-terracotta hover:text-serana-forest transition-colors"
+                  >
+                    Olvidé mi contraseña <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
 
               {(authError || notice) && (
                 <p className={`text-sm leading-relaxed ${notice ? 'text-serana-olive' : 'text-rose-600'}`}>
@@ -186,8 +213,20 @@ export default function LoginPage() {
                 className="w-full inline-flex items-center justify-center gap-2 bg-serana-forest text-serana-cream px-8 py-4 rounded-full font-bold tracking-widest uppercase text-xs hover:bg-serana-olive transition disabled:opacity-60"
               >
                 {busy && <Loader2 className="w-4 h-4 animate-spin" />}
-                {mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}
+                {mode === 'login' && 'Iniciar sesión'}
+                {mode === 'register' && 'Crear cuenta'}
+                {mode === 'forgot' && 'Enviar enlace'}
               </button>
+
+              {mode === 'forgot' && (
+                <button
+                  type="button"
+                  onClick={() => { setMode('login'); setNotice(null); }}
+                  className="w-full text-center text-[11px] font-bold uppercase tracking-widest text-serana-forest/55 hover:text-serana-forest transition-colors"
+                >
+                  Volver a entrar
+                </button>
+              )}
             </form>
           )}
         </motion.section>

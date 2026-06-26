@@ -26,6 +26,8 @@ type AuthContextValue = {
   authError: string | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (input: { email: string; password: string; fullName: string; phone: string }) => Promise<{ needsEmailConfirmation: boolean; welcomeName: string }>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
   signOut: () => Promise<void>;
   saveProfile: (input: CustomerProfileInput) => Promise<void>;
   refreshAccount: () => Promise<void>;
@@ -47,6 +49,7 @@ function normalizeAuthError(message: string) {
   if (/invalid_email/i.test(message)) return 'Escribe un correo válido.';
   if (/weak_password/i.test(message)) return 'La contraseña debe tener al menos 6 caracteres.';
   if (/rate_limited/i.test(message)) return 'Demasiados intentos. Intenta de nuevo en un minuto.';
+  if (/not authenticated|auth session missing|session/i.test(message)) return 'El enlace expiró o no es válido. Solicita uno nuevo.';
   return message || 'No pudimos completar la acción.';
 }
 
@@ -176,6 +179,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const requestPasswordReset = useCallback(async (email: string) => {
+    setAuthError(null);
+    const redirectTo = typeof window !== 'undefined'
+      ? `${window.location.origin}/reset-password`
+      : undefined;
+
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      email.trim().toLowerCase(),
+      redirectTo ? { redirectTo } : undefined,
+    );
+    if (error) {
+      const msg = normalizeAuthError(error.message);
+      setAuthError(msg);
+      throw new Error(msg);
+    }
+  }, []);
+
+  const updatePassword = useCallback(async (password: string) => {
+    setAuthError(null);
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      const msg = normalizeAuthError(error.message);
+      setAuthError(msg);
+      throw new Error(msg);
+    }
+  }, []);
+
   const signOut = useCallback(async () => {
     setAuthError(null);
     await supabase.auth.signOut();
@@ -206,6 +236,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authError,
     signIn,
     signUp,
+    requestPasswordReset,
+    updatePassword,
     signOut,
     saveProfile,
     refreshAccount,
@@ -217,6 +249,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authError,
     signIn,
     signUp,
+    requestPasswordReset,
+    updatePassword,
     signOut,
     saveProfile,
     refreshAccount,
