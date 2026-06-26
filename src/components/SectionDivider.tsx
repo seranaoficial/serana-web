@@ -51,32 +51,44 @@ export default function SectionDivider({ variant = 'rule', label, className = ''
     );
   }
 
-  // Default "rule" with optional centered label and a leaf medallion.
+  // Default "rule" with optional centered label and a leaf ornament.
   return (
     <div className={`relative w-full flex items-center justify-center py-10 ${className}`}>
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, margin: '-10%' }}
-        transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
-        className="absolute left-1/2 -translate-x-1/2 w-full max-w-3xl h-px bg-serana-forest/15 origin-center"
-      />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.6 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: '-10%' }}
-        transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 flex items-center gap-3 px-5 bg-serana-cream"
-      >
-        <DividerOrnament />
-        {label && (
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-serana-forest/55">
-            {label}
-          </span>
-        )}
-        <DividerOrnament flip />
-      </motion.div>
+      <div className="flex w-full max-w-3xl items-center gap-4 px-4">
+        <RuleSegment origin="right" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 flex shrink-0 items-center gap-3"
+        >
+          <DividerOrnament />
+          {label && (
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-serana-forest/55">
+              {label}
+            </span>
+          )}
+          <DividerOrnament flip />
+        </motion.div>
+        <RuleSegment origin="left" />
+      </div>
     </div>
+  );
+}
+
+function RuleSegment({ origin }: { origin: 'left' | 'right' }) {
+  return (
+    <motion.span
+      aria-hidden
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true, margin: '-10%' }}
+      transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
+      className={`h-px flex-1 bg-serana-forest/15 ${
+        origin === 'left' ? 'origin-left' : 'origin-right'
+      }`}
+    />
   );
 }
 
