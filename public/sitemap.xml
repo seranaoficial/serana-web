@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://serana.co/</loc>
+    <loc>https://serana.food/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://serana.co/shop</loc>
+    <loc>https://serana.food/shop</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://serana.co/about</loc>
+    <loc>https://serana.food/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://serana.co/community</loc>
+    <loc>https://serana.food/community</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://serana.co/privacidad</loc>
+    <loc>https://serana.food/privacidad</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://serana.co/terminos</loc>
+    <loc>https://serana.food/terminos</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://serana.co/devoluciones</loc>
+    <loc>https://serana.food/devoluciones</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

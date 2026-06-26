@@ -6,13 +6,13 @@ export default function TerminosPage() {
       kicker="Condiciones · Servicio"
       title="Términos y"
       italic="Condiciones"
-      intro="Estos términos rigen el uso de serana.co y la compra de productos en nuestra tienda. Al usar el sitio aceptas estas condiciones; si no estás de acuerdo, te pedimos no continuar con la compra."
+      intro="Estos términos rigen el uso de serana.food y la compra de productos en nuestra tienda. Al usar el sitio aceptas estas condiciones; si no estás de acuerdo, te pedimos no continuar con la compra."
       lastUpdated="abril 2026"
     >
       <h2>1. Quiénes somos</h2>
       <p>
         <strong>Serana Wellness S.A.S.</strong>, sociedad colombiana con domicilio en Medellín, Antioquia,
-        opera la tienda en línea serana.co, dedicada a la venta de alimentos preparados y
+        opera la tienda en línea serana.food, dedicada a la venta de alimentos preparados y
         productos de bienestar. Para cualquier asunto contractual:{' '}
         <a href="mailto:contacto@serana.co">contacto@serana.co</a>.
       </p>
@@ -71,7 +71,7 @@ export default function TerminosPage() {
       </p>
 
       <h2>7. Conducta del usuario</h2>
-      <p>Al usar serana.co te comprometes a:</p>
+      <p>Al usar serana.food te comprometes a:</p>
       <ul>
         <li>Proporcionar información veraz y actualizada.</li>
         <li>No usar el sitio para actividades fraudulentas o ilegales.</li>

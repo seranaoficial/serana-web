@@ -17,7 +17,7 @@ export default function PrivacidadPage() {
       </p>
 
       <h2>2. Datos que recolectamos</h2>
-      <p>Cuando interactúas con serana.co podemos recolectar:</p>
+      <p>Cuando interactúas con serana.food podemos recolectar:</p>
       <ul>
         <li>
           <strong>Datos de contacto:</strong> nombre, correo, teléfono y ciudad cuando te suscribes
