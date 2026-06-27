@@ -24,6 +24,25 @@ function normalizeUnitLabel(name: string) {
     .replace(/\s*\(3 unidades\)/gi, ' (Libra)');
 }
 
+function inferStorefrontCategory(row: ProductRow) {
+  const code = row.category_code ?? 'otros';
+  const text = `${row.slug ?? ''} ${row.name ?? ''} ${row.description ?? ''}`.toLowerCase();
+
+  if (code === 'frutas') {
+    return text.includes('picad') || text.includes('baby bowl') || text.includes('bowl')
+      ? 'frutas-picadas'
+      : 'mercado-fresco';
+  }
+  if (code === 'verduras') {
+    return text.includes('picad') || text.includes('baby bowl') || text.includes('bowl')
+      ? 'verduras-picadas'
+      : 'mercado-fresco';
+  }
+  if (code === 'ensaladas') return 'ensaladas-tradicionales';
+  if (code === 'bowls') return text.includes('frut') || text.includes('berry') ? 'frutas-picadas' : 'verduras-picadas';
+  return code;
+}
+
 function rowToProduct(row: ProductRow): Product {
   // The cart store uses slug as id so cart entries survive when the UUID changes.
   // Falls back to UUID for catalogue rows that don't have a slug yet.
@@ -43,7 +62,7 @@ function rowToProduct(row: ProductRow): Product {
     description: row.description || '',
     image: row.image_url || staticMatch?.image || '',
     gallery: row.gallery_urls ?? [],
-    category: row.category_code ?? 'otros',
+    category: inferStorefrontCategory(row),
     benefits: FALLBACK_BENEFITS,
   };
 }
