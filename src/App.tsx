@@ -28,7 +28,6 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Heavy non-critical UI: defer until idle so they don't block first paint.
 const LivingBackground = lazy(() => import('./components/LivingBackground'));
-const ChatBot = lazy(() => import('./components/ChatBot'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -57,9 +56,6 @@ export default function App() {
         </Suspense>
         <ScrollVine />
         <ScrollToTop />
-        <Suspense fallback={null}>
-          <ChatBot />
-        </Suspense>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
