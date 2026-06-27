@@ -279,14 +279,26 @@ function GalleryCard({
       <div className="relative flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-serana-forest/8 bg-white shadow-[0_15px_40px_-25px_rgba(39,54,23,0.25)] transition-all duration-500 hover:-translate-y-0.5 hover:border-serana-olive/25 hover:shadow-[0_25px_60px_-25px_rgba(39,54,23,0.35)]">
         <button type="button" onClick={onOpen} className="block text-left">
           <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-serana-cream/30 to-serana-olive/10">
-            <img
-              src={product.image}
-              alt={product.name}
-              referrerPolicy="no-referrer"
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+            <picture>
+              <source
+                media="(min-width: 1280px)"
+                srcSet={product.image.replace('-desktop.webp', '-hero.webp')}
+              />
+              <source
+                media="(min-width: 640px)"
+                srcSet={product.image.replace('-desktop.webp', '-desktop.webp')}
+              />
+              <img
+                src={product.image.replace('-desktop.webp', '-mobile.webp')}
+                srcSet={`${product.image.replace('-desktop.webp', '-mobile.webp')} 600w, ${product.image} 900w, ${product.image.replace('-desktop.webp', '-hero.webp')} 1600w`}
+                sizes="(max-width: 640px) 600px, (max-width: 1280px) 900px, 1600px"
+                alt={product.name}
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </picture>
             <div className="absolute top-3 left-3">
               <span className="rounded bg-serana-cream/90 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-serana-forest">
                 {formatCategory(product.category)}

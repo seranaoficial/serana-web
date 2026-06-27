@@ -72,15 +72,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         className="relative rounded-[1.5rem] bg-white shadow-[0_20px_60px_-30px_rgba(39,54,23,0.25)] group-hover:shadow-[0_30px_80px_-30px_rgba(39,54,23,0.35)] transition-shadow duration-500 overflow-hidden"
       >
         <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-serana-cream/30 to-serana-olive/10">
-          <motion.img
-            src={product.image}
-            alt={product.name}
-            referrerPolicy="no-referrer"
-            loading="lazy"
-            decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            style={{ transformStyle: 'preserve-3d' }}
-          />
+          <picture>
+            <source
+              media="(min-width: 1280px)"
+              srcSet={product.image.replace('-desktop.webp', '-hero.webp')}
+            />
+            <source
+              media="(min-width: 640px)"
+              srcSet={product.image.replace('-desktop.webp', '-desktop.webp')}
+            />
+            <motion.img
+              src={product.image.replace('-desktop.webp', '-mobile.webp')}
+              srcSet={`${product.image.replace('-desktop.webp', '-mobile.webp')} 600w, ${product.image} 900w, ${product.image.replace('-desktop.webp', '-hero.webp')} 1600w`}
+              sizes="(max-width: 640px) 600px, (max-width: 1280px) 900px, 1600px"
+              alt={product.name}
+              referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              style={{ transformStyle: 'preserve-3d' }}
+            />
+          </picture>
 
           {/* Cursor-following glare */}
           {hovering && (
