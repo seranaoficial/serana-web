@@ -120,7 +120,7 @@ const HAND_FRUIT_GROUP: ComboGroupDefinition = {
   id: 'hand_fruits',
   label: 'Frutas de mano',
   shortLabel: 'Frutas de mano',
-  helper: 'Frutas enteras para lonchera o consumo diario',
+  helper: 'Frutas enteras por unidad para lonchera o consumo diario',
   max: 6,
   unitLabel: 'und',
   source: {
@@ -132,9 +132,6 @@ const HAND_FRUIT_GROUP: ComboGroupDefinition = {
       'durazno',
       'banano-libra',
       'kiwi-libra',
-      'pitahaya',
-      'guayaba-pera',
-      'guayaba-manzana-libra',
       'mangostino',
       'rambutan',
     ],
@@ -335,7 +332,7 @@ export function resolveComboGroups(definition: ComboDefinition, products: Produc
       })
       .map((product) => ({
         slug: product.id,
-        name: product.name,
+        name: formatComboOptionName(group, product.name),
         image: product.image,
         description: product.description,
         category: product.category,
@@ -348,6 +345,11 @@ export function resolveComboGroups(definition: ComboDefinition, products: Produc
       options,
     };
   });
+}
+
+function formatComboOptionName(group: ComboGroupDefinition, name: string) {
+  if (group.id !== HAND_FRUIT_GROUP.id) return name;
+  return name.replace(/\s*\([^)]*\)$/, ' (Unidad)');
 }
 
 export function buildComboCustomizationText(payload: ComboSelectionPayload) {

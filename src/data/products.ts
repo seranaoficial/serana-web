@@ -1584,14 +1584,14 @@ export const products: Product[] = [
     benefits: ['Completo', 'Ahorro'],
     healthBenefit: 'La porción perfecta para tu mercado saludable quincenal.',
     portions: 84,
-    observation: 'Incluye opciones para escoger sopas o cremas, frutas picadas, verduras picadas, una ensalada gourmet, una ensalada tradicional, jugos saludables o jugo de naranja, frutos secos y frutas de mano.',
+    observation: 'Incluye opciones para escoger sopas o cremas, frutas picadas, verduras picadas, una ensalada gourmet, una ensalada tradicional, jugos saludables o jugo de naranja, frutos secos y frutas de mano por unidad.',
     ingredients: [
       '3 sopas o cremas',
       '3 baby bowls de fruta x 250 gr',
       '3 baby bowls de verduras x 250 gr',
       '1 bowl de ensalada gourmet',
       '1 bowl de ensalada tradicional',
-      '6 frutas de mano',
+      '6 frutas de mano por unidad',
       '1 kg de aguacate hass',
       'cilantro x 200 gr',
       '1 kg de papa capira',
@@ -1615,14 +1615,14 @@ export const products: Product[] = [
     benefits: ['Familiar', 'Gran ahorro'],
     healthBenefit: 'Un mercado saludable para compartir entre familia y amigos.',
     portions: 118,
-    observation: 'Incluye opciones para escoger sopas o cremas, frutas picadas, verduras picadas, ensaladas gourmet, ensaladas tradicionales, jugos saludables o jugo de naranja, frutos secos y frutas de mano.',
+    observation: 'Incluye opciones para escoger sopas o cremas, frutas picadas, verduras picadas, ensaladas gourmet, ensaladas tradicionales, jugos saludables o jugo de naranja, frutos secos y frutas de mano por unidad.',
     ingredients: [
       '5 sopas o cremas',
       '6 baby bowls de fruta x 250 gr',
       '6 baby bowls de verduras x 250 gr',
       '2 bowls de ensalada gourmet',
       '2 bowls de ensalada tradicional',
-      '8 frutas de mano',
+      '8 frutas de mano por unidad',
       '1 kg de aguacate hass',
       'cilantro x 200 gr',
       '2 kg de papa capira',
@@ -1672,7 +1672,7 @@ export const products: Product[] = [
     benefits: ['Niños', 'Saludable'],
     healthBenefit: 'Pensado en porciones exactas para niños.',
     portions: 19,
-    observation: 'Incluye opciones para escoger frutas picadas, ensalada tradicional, ensalada gourmet y frutas de mano.',
+    observation: 'Incluye opciones para escoger frutas picadas, ensalada tradicional, ensalada gourmet y frutas de mano por unidad.',
     ingredients: [
       '2 mini bowls de fruta x 200 gr',
       '2 mini bowl berry mix x 150 gr',
@@ -1680,7 +1680,7 @@ export const products: Product[] = [
       '1 ensalada mini tradicional x 250 gr',
       '1 ensalada mini gourmet x 250 gr',
       '5 frutos secos mix 50 gr',
-      '5 frutas de mano',
+      '5 frutas de mano por unidad',
       '6 galletas de avena',
       '5 barritas de granola'
     ]
@@ -1695,7 +1695,7 @@ export const products: Product[] = [
     benefits: ['Productividad', 'Práctico'],
     healthBenefit: 'Pensado en la practicidad y el ajetreo de tu día a día en la oficina.',
     portions: 21,
-    observation: 'Incluye opciones para escoger frutas picadas, ensalada tradicional, ensalada gourmet y frutas de mano.',
+    observation: 'Incluye opciones para escoger frutas picadas, ensalada tradicional, ensalada gourmet y frutas de mano por unidad.',
     ingredients: [
       '2 baby bowls de fruta x 250 gr',
       '2 baby bowl berry mix x 200 gr',
@@ -1703,7 +1703,7 @@ export const products: Product[] = [
       '1 ensalada mini tradicional x 250 gr',
       '1 ensalada mini gourmet x 250 gr',
       '6 frutos secos mix 50 gr',
-      '6 frutas de mano',
+      '6 frutas de mano por unidad',
       '6 galletas de avena',
       '5 barritas de granola'
     ]
