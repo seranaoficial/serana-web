@@ -103,7 +103,7 @@ export default function ProductGrid({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-7"
+            className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-10"
           >
             {visible.map((product, i) => (
               <GalleryCard

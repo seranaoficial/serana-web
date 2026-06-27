@@ -71,14 +71,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="relative rounded-[1.5rem] bg-white shadow-[0_20px_60px_-30px_rgba(39,54,23,0.25)] group-hover:shadow-[0_30px_80px_-30px_rgba(39,54,23,0.35)] transition-shadow duration-500 overflow-hidden"
       >
-        <div className="relative aspect-[3/4] overflow-hidden">
+        <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-serana-cream/40 via-serana-cream/20 to-serana-olive/10">
           <motion.img
             src={product.image}
             alt={product.name}
             referrerPolicy="no-referrer"
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
             style={{ transformStyle: 'preserve-3d' }}
           />
 
