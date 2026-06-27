@@ -104,12 +104,6 @@ export default function Navbar() {
             <UserRound className="w-3.5 h-3.5" />
             {user ? firstName : 'Ingresar'}
           </Link>
-          {/* Hours chip — implies curated availability without screaming */}
-          <div className="hidden lg:flex items-center gap-2 text-[#273617]/55 text-[9px] font-bold tracking-[0.4em] uppercase">
-            <span>Mar — Sáb</span>
-            <span className="w-1 h-1 rounded-full bg-[#273617]/30" />
-            <span>10 — 18 h</span>
-          </div>
           <div className="relative">
             <motion.button
               onClick={toggleCart}

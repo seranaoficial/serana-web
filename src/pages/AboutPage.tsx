@@ -101,10 +101,6 @@ export default function AboutPage() {
                 Serana nace para hacer del bienestar una experiencia más simple, deliciosa y consciente, con alimentos frescos y un cuidado que se siente.
               </p>
               <div className="mt-5 flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-serana-forest/50 font-bold">
-                <span>Mar — Sáb</span>
-                <span className="w-1 h-1 rounded-full bg-serana-forest/30" />
-                <span>10 — 18 h</span>
-                <span className="w-1 h-1 rounded-full bg-serana-forest/30" />
                 <span>Medellín</span>
               </div>
             </motion.div>
