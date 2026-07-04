@@ -27,16 +27,16 @@ type Category =
   | 'combos';
 
 const CATEGORIES: Array<{ id: Category; label: string; icon: SerenaIconName }> = [
-  { id: 'all', label: 'Todos', icon: 'SerenaMark' },
   { id: 'ensaladas-gourmet', label: 'Ensaladas gourmet', icon: 'Bowl' },
-  { id: 'ensaladas-tradicionales', label: 'Ensaladas tradicionales', icon: 'Leaf' },
-  { id: 'sopas', label: 'Sopas y cremas', icon: 'Pot' },
-  { id: 'bebidas', label: 'Bebidas y shots', icon: 'Drop' },
-  { id: 'salsas', label: 'Salsas y complementos', icon: 'Citrus' },
-  { id: 'combos', label: 'Combos', icon: 'Spark' },
   { id: 'frutas-picadas', label: 'Frutas picadas', icon: 'Seed' },
+  { id: 'ensaladas-tradicionales', label: 'Ensaladas tradicionales', icon: 'Leaf' },
   { id: 'verduras-picadas', label: 'Verduras picadas', icon: 'Sprout' },
+  { id: 'salsas', label: 'Salsas y complementos', icon: 'Citrus' },
+  { id: 'bebidas', label: 'Bebidas y shots', icon: 'Drop' },
+  { id: 'sopas', label: 'Sopas y cremas', icon: 'Pot' },
+  { id: 'combos', label: 'Combos', icon: 'Spark' },
   { id: 'mercado-fresco', label: 'Mercado fresco', icon: 'Seed' },
+  { id: 'all', label: 'Todos', icon: 'SerenaMark' },
 ];
 
 function parseCategoryParam(value: string | null): Category {
