@@ -90,6 +90,14 @@ const RITUALS: Array<{ Icon: IconCmp; title: string; italic: string; body: strin
   },
 ];
 
+const MEMBERSHIP_PATH = '/login';
+
+const MEMBERSHIP_POINTS = [
+  'Plan de transformación de 90 días para reconectar con tu cuerpo, tu energía y tu bienestar.',
+  'Kit de bienvenida premium con productos Serana seleccionados, guía de inicio y herramientas de seguimiento.',
+  'Una cuenta Serana para visualizar tu membresía, beneficios, compras y progreso del plan.',
+];
+
 export default function CommunityPage() {
   const [enrollEvent, setEnrollEvent] = useState<EnrollEventInfo | null>(null);
 
@@ -142,7 +150,7 @@ export default function CommunityPage() {
               className="lg:col-span-4 lg:pt-12"
             >
               <p className="text-base text-serana-forest/70 font-light leading-relaxed border-l border-serana-forest/15 pl-5 max-w-sm">
-                Más que una tienda, somos un movimiento. Únete a nuestros retos, eventos y círculos.
+                Más que una tienda, somos un movimiento. Únete a nuestros eventos del semestre, experiencias, charlas online, retos y círculos.
               </p>
               <div className="mt-5 flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-serana-forest/50 font-bold">
                 <span>Medellín</span>
@@ -186,7 +194,7 @@ export default function CommunityPage() {
               </h2>
             </div>
             <p className="lg:col-span-5 text-sm text-serana-forest/65 font-light leading-relaxed border-l border-serana-forest/15 pl-5 max-w-md">
-              Vive experiencias diseñadas para acompañar tu bienestar más allá del menú.
+              La agenda de comunidad reúne próximos eventos, experiencias del semestre, charlas online y retos para acompañar tu bienestar más allá del menú.
             </p>
           </div>
 
@@ -294,6 +302,92 @@ export default function CommunityPage() {
         </section>
 
         <SectionDivider />
+
+        {/* ── Membresía ────────────────────────────────────────────────── */}
+        <section className="my-12 md:my-24">
+          <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.65 }}
+              className="lg:col-span-7 rounded-[2rem] bg-serana-forest text-serana-cream p-8 md:p-10 lg:p-12 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 pointer-events-none opacity-[0.06]">
+                <svg viewBox="0 0 600 360" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.4">
+                  <path d="M-20 290 C 120 210, 250 330, 390 230 C 500 150, 570 240, 630 180" />
+                  <path d="M-20 330 C 120 280, 250 350, 390 300 C 500 260, 570 320, 630 280" opacity="0.65" />
+                </svg>
+              </div>
+
+              <div className="relative z-10">
+                <span className="inline-flex items-center gap-3 text-serana-ochre font-bold tracking-[0.4em] uppercase text-[10px] mb-5">
+                  <span className="w-10 h-px bg-serana-ochre/70" />
+                  Membresía Serana
+                </span>
+                <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[0.95]">
+                  Transforma tu vida
+                  <br />
+                  <span className="italic text-serana-ochre">en 90 días</span>.
+                </h2>
+                <p className="mt-6 text-serana-cream/74 font-light leading-relaxed text-base max-w-xl">
+                  Un plan para entender de qué trata la experiencia Serana, empezar tu proceso y conectar tu membresía con una cuenta donde puedas consultar beneficios, compras y seguimiento.
+                </p>
+
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <Link
+                    to={MEMBERSHIP_PATH}
+                    state={{ from: '/cuenta' }}
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-serana-ochre text-serana-forest rounded-full transition-all hover:bg-serana-cream hover:-translate-y-0.5 font-sans font-bold tracking-widest text-[11px] uppercase shadow-lg"
+                  >
+                    Adquirir membresía
+                    <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link
+                    to="/cuenta"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-serana-cream/30 text-serana-cream rounded-full font-sans font-medium tracking-widest text-[11px] uppercase hover:bg-serana-cream/10 transition-all"
+                  >
+                    Ver mi cuenta
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.65, delay: 0.08 }}
+              className="lg:col-span-5 rounded-[2rem] border border-serana-forest/8 bg-white p-7 md:p-8"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.32em] text-serana-terracotta mb-4">
+                ¿Qué incluye?
+              </p>
+              <div className="space-y-4">
+                {MEMBERSHIP_POINTS.map((point, i) => (
+                  <div key={point} className="flex gap-4">
+                    <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-serana-cream text-serana-forest font-serif italic text-lg">
+                      {i + 1}
+                    </span>
+                    <p className="text-sm text-serana-forest/70 font-light leading-relaxed">
+                      {point}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-7 rounded-2xl border border-serana-forest/10 bg-serana-cream/50 p-5">
+                <p className="font-serif text-xl text-serana-forest leading-tight">
+                  Al adquirirla, el cliente entra o crea su usuario.
+                </p>
+                <p className="mt-2 text-xs text-serana-forest/60 leading-relaxed">
+                  Desde su cuenta puede visualizar los beneficios y la información de membresía que ya está conectada al perfil.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <SectionDivider variant="brush" />
 
         {/* ── Editorial story / "comparte tu historia" ──────────────────── */}
         <section className="my-12 md:my-24">
