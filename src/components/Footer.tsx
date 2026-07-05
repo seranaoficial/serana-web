@@ -6,6 +6,7 @@ import { buildWhatsAppUrl } from '../lib/contact';
 
 const LOGO_URL =
   'https://qlgjqvgjuscquhspjqdp.supabase.co/storage/v1/object/public/AETHERA-DOCS/LOGO%20PRINCIPAL-07.png';
+const EXPERIENCES_URL = 'https://serana-experiencias.vercel.app/#propuesta';
 
 const today = new Date();
 
@@ -170,6 +171,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3 text-sm tracking-wide">
               <FooterLink to="/shop">Menú</FooterLink>
+              <FooterLink to={EXPERIENCES_URL} external>Experiencias</FooterLink>
               <FooterLink to="/shop?filter=subscription">Suscripciones</FooterLink>
               <FooterLink to="/about">Nuestra Historia</FooterLink>
               <FooterLink to="/community">Comunidad</FooterLink>
@@ -291,16 +293,36 @@ function SocialIcon({
   );
 }
 
-function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
+function FooterLink({
+  to,
+  external = false,
+  children,
+}: {
+  to: string;
+  external?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <li>
-      <Link
-        to={to}
-        className="text-serana-cream/85 hover:text-serana-ochre transition-colors inline-flex items-center gap-2 group"
-      >
-        <span className="w-3 h-px bg-serana-cream/20 group-hover:bg-serana-ochre group-hover:w-5 transition-all" />
-        {children}
-      </Link>
+      {external ? (
+        <a
+          href={to}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-serana-cream/85 hover:text-serana-ochre transition-colors inline-flex items-center gap-2 group"
+        >
+          <span className="w-3 h-px bg-serana-cream/20 group-hover:bg-serana-ochre group-hover:w-5 transition-all" />
+          {children}
+        </a>
+      ) : (
+        <Link
+          to={to}
+          className="text-serana-cream/85 hover:text-serana-ochre transition-colors inline-flex items-center gap-2 group"
+        >
+          <span className="w-3 h-px bg-serana-cream/20 group-hover:bg-serana-ochre group-hover:w-5 transition-all" />
+          {children}
+        </Link>
+      )}
     </li>
   );
 }

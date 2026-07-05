@@ -9,6 +9,7 @@ import { useAuth } from './AuthProvider';
 import { buildWhatsAppUrl } from '../lib/contact';
 
 const WHATSAPP_URL = buildWhatsAppUrl('Hola, quiero recibir asesoría de Serana.');
+const EXPERIENCES_URL = 'https://serana-experiencias.vercel.app/#propuesta';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,6 +49,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Inicio', path: '/' },
     { name: 'Menú', path: '/shop' },
+    { name: 'Experiencias', path: EXPERIENCES_URL, external: true },
     { name: 'Nosotros', path: '/about' },
     { name: 'Comunidad', path: '/community' },
   ];
@@ -77,14 +79,27 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-12">
           {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className="relative text-serana-forest font-medium text-xs tracking-[0.15em] uppercase hover:text-serana-olive transition-colors group py-2"
-            >
-              {link.name}
-              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-serana-olive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-            </Link>
+            link.external ? (
+              <a
+                key={link.name}
+                href={link.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative text-serana-forest font-medium text-xs tracking-[0.15em] uppercase hover:text-serana-olive transition-colors group py-2"
+              >
+                {link.name}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-serana-olive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+              </a>
+            ) : (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="relative text-serana-forest font-medium text-xs tracking-[0.15em] uppercase hover:text-serana-olive transition-colors group py-2"
+              >
+                {link.name}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-serana-olive scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+              </Link>
+            )
           ))}
         </div>
 
@@ -208,13 +223,25 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + (i * 0.05) }}
                 >
-                  <Link
-                    to={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-3xl font-serif text-serana-forest hover:text-serana-olive transition-colors"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.external ? (
+                    <a
+                      href={link.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-3xl font-serif text-serana-forest hover:text-serana-olive transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-3xl font-serif text-serana-forest hover:text-serana-olive transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
               <motion.a
