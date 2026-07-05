@@ -1820,7 +1820,7 @@ export const products: Product[] = baseProducts.map(addProduceWeightVariants);
 
 function addProduceWeightVariants(product: Product): Product {
   if (product.variants?.length) return product;
-  if (!['frutas-picadas', 'verduras-picadas', 'mercado-fresco'].includes(product.category)) return product;
+  if (!['frutas-picadas', 'verduras-picadas'].includes(product.category)) return product;
 
   const normalizedName = product.name.toLowerCase();
   if (normalizedName.includes('(libra)')) {
