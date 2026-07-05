@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Check, Loader2, Quote, Send, Star } from 'lucide-react';
 import { motion } from 'motion/react';
 import { captureLead } from '../lib/api/leads';
+import { listPublishedTestimonials, type PublishedTestimonial } from '../lib/api/testimonials';
 
 const TESTIMONIALS = [
   {
@@ -19,10 +20,29 @@ const TESTIMONIALS = [
 ];
 
 export default function TestimonialsSection() {
+  const [publishedTestimonials, setPublishedTestimonials] = useState<PublishedTestimonial[]>([]);
   const [rating, setRating] = useState(5);
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  useEffect(() => {
+    let active = true;
+    void listPublishedTestimonials().then((items) => {
+      if (active) setPublishedTestimonials(items);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const testimonialCards = publishedTestimonials.length > 0
+    ? publishedTestimonials.map((item) => ({
+        title: item.full_name,
+        text: item.message,
+        rating: item.rating,
+      }))
+    : TESTIMONIALS.map((item) => ({ ...item, rating: 5 }));
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,6 +64,7 @@ export default function TestimonialsSection() {
         rating,
         rating_scale: 5,
         section: 'home_testimonials',
+        moderation_status: 'pending',
       },
     });
 
@@ -78,18 +99,18 @@ export default function TestimonialsSection() {
 
         <div className="grid lg:grid-cols-12 gap-4 items-start">
           <div className="lg:col-span-7 grid sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3 gap-4">
-            {TESTIMONIALS.map((item, idx) => (
+            {testimonialCards.map((item, idx) => (
               <motion.article
-                key={item.title}
+                key={`${item.title}-${idx}`}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08 }}
                 className="rounded-2xl border border-serana-forest/10 bg-serana-cream/45 p-6"
               >
-                <div className="flex items-center gap-1 text-serana-ochre mb-5" aria-label="Reseña positiva">
+                <div className="flex items-center gap-1 text-serana-ochre mb-5" aria-label={`${item.rating} de 5 estrellas`}>
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                    <Star key={i} className={`w-3.5 h-3.5 ${i < item.rating ? 'fill-current' : ''}`} />
                   ))}
                 </div>
                 <h3 className="font-serif text-xl text-serana-forest leading-tight mb-3">{item.title}</h3>
@@ -190,7 +211,7 @@ export default function TestimonialsSection() {
               {status === 'error'
                 ? 'No pudimos guardar la reseña. Revisa el comentario e intenta nuevamente.'
                 : status === 'sent'
-                  ? 'Gracias por ayudar a construir la comunidad Serana.'
+                  ? 'Gracias. Tu reseña queda en revisión antes de publicarse.'
                   : 'Tu opinión se guarda para mejorar la experiencia y el menú de Serana.'}
             </p>
           </motion.form>
