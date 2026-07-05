@@ -5,10 +5,12 @@ import SectionDivider from '../components/SectionDivider';
 import EventEnrollModal, { type EnrollEventInfo } from '../components/EventEnrollModal';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { useEffect, useState, type FormEvent } from 'react';
+import { ArrowRight, Check, Loader2, Send, Star } from 'lucide-react';
 import { Calendar, Sprout, Drop, Spark, Sun, SerenaMark } from '../components/SeranaIcons';
 import type { ComponentType, SVGProps } from 'react';
+import { captureLead } from '../lib/api/leads';
+import { listPublishedTestimonials, type PublishedTestimonial } from '../lib/api/testimonials';
 
 const today = new Date();
 const editionNumber = String(((today.getMonth() + 1) % 12) + 1).padStart(2, '0');
@@ -100,6 +102,21 @@ const MEMBERSHIP_POINTS = [
 
 export default function CommunityPage() {
   const [enrollEvent, setEnrollEvent] = useState<EnrollEventInfo | null>(null);
+  const [publishedStories, setPublishedStories] = useState<PublishedTestimonial[]>([]);
+  const [storyRating, setStoryRating] = useState(5);
+  const [storyName, setStoryName] = useState('');
+  const [storyMessage, setStoryMessage] = useState('');
+  const [storyStatus, setStoryStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  useEffect(() => {
+    let active = true;
+    void listPublishedTestimonials(3).then((items) => {
+      if (active) setPublishedStories(items);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const openEnroll = (event: Event) => {
     setEnrollEvent({
@@ -109,6 +126,42 @@ export default function CommunityPage() {
       event_date: event.date,
       event_cta: event.cta,
     });
+  };
+
+  const handleStorySubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (storyStatus === 'sending') return;
+
+    const cleanMessage = storyMessage.trim();
+    const cleanName = storyName.trim();
+    if (cleanMessage.length < 10) {
+      setStoryStatus('error');
+      return;
+    }
+
+    setStoryStatus('sending');
+    const id = await captureLead({
+      channel: 'testimonial',
+      full_name: cleanName || undefined,
+      message: cleanMessage,
+      metadata: {
+        rating: storyRating,
+        rating_scale: 5,
+        section: 'community_stories',
+        submission_type: 'story_or_testimonial',
+        moderation_status: 'pending',
+      },
+    });
+
+    if (!id) {
+      setStoryStatus('error');
+      return;
+    }
+
+    setStoryStatus('sent');
+    setStoryName('');
+    setStoryMessage('');
+    setStoryRating(5);
   };
 
   return (
@@ -390,7 +443,7 @@ export default function CommunityPage() {
         <SectionDivider variant="brush" />
 
         {/* ── Editorial story / "comparte tu historia" ──────────────────── */}
-        <section className="my-12 md:my-24">
+        <section id="historias-serana" className="my-12 md:my-24 scroll-mt-28">
           <div className="grid md:grid-cols-12 gap-10 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -24 }}
@@ -428,7 +481,7 @@ export default function CommunityPage() {
             >
               <span className="inline-flex items-center gap-3 text-serana-olive font-bold tracking-[0.4em] uppercase text-[10px] mb-4">
                 <span className="w-10 h-px bg-serana-olive/60" />
-                Historias Serana
+                Historias y testimonios Serana
               </span>
               <h2 className="font-serif text-serana-forest text-4xl md:text-5xl leading-[0.95] tracking-tight">
                 ¿Tienes una historia de
@@ -436,28 +489,122 @@ export default function CommunityPage() {
                 <span className="italic text-serana-ochre">transformación?</span>
               </h2>
               <p className="mt-6 text-serana-forest/70 font-light leading-relaxed text-base max-w-md">
-                Nos encanta escuchar cómo Serana ha impactado tu vida. Comparte tu historia y recibe un regalo especial en tu próxima caja.
+                Nos encanta escuchar cómo Serana ha impactado tu vida. Comparte tu historia, reseña o testimonio desde aquí y recibe un regalo especial en tu próxima caja.
               </p>
               <p className="mt-3 text-serana-forest/55 font-light text-sm max-w-md italic">
                 Tu experiencia también puede inspirar a otros a empezar.
               </p>
 
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <a
-                  href="mailto:contacto@serana.co?subject=Mi%20historia%20Serana"
-                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-serana-forest text-serana-cream rounded-full transition-all hover:bg-serana-olive hover:-translate-y-0.5 font-sans font-bold tracking-widest text-[11px] uppercase shadow-lg"
+              <div className="mt-8 grid lg:grid-cols-[minmax(0,1fr)_240px] gap-4 items-start">
+                <form
+                  onSubmit={handleStorySubmit}
+                  className="rounded-[1.5rem] border border-serana-forest/10 bg-white/70 p-5 md:p-6 shadow-[0_18px_50px_-35px_rgba(39,54,23,0.45)]"
                 >
-                  Comparte Tu Historia
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </a>
-                <a
-                  href="https://www.instagram.com/serana.ac"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-serana-forest/20 text-serana-forest rounded-full font-sans font-medium tracking-widest text-[11px] uppercase hover:bg-serana-forest/5 transition-all"
-                >
-                  Síguenos · @serana.ac
-                </a>
+                  <div className="mb-4">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-serana-terracotta font-bold mb-2">
+                      Comparte tu historia
+                    </p>
+                    <div className="flex items-center gap-1.5" aria-label={`${storyRating} de 5 estrellas`}>
+                      {Array.from({ length: 5 }).map((_, index) => {
+                        const value = index + 1;
+                        const selected = value <= storyRating;
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            onClick={() => setStoryRating(value)}
+                            aria-label={`${value} estrella${value > 1 ? 's' : ''}`}
+                            aria-pressed={selected}
+                            className="w-8 h-8 rounded-full border border-serana-forest/10 bg-serana-cream/60 text-serana-ochre flex items-center justify-center transition hover:bg-serana-ochre/15 focus:outline-none focus:ring-2 focus:ring-serana-ochre/50"
+                          >
+                            <Star className={`w-4 h-4 ${selected ? 'fill-current' : ''}`} />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label htmlFor="story-name" className="block text-[10px] uppercase tracking-widest text-serana-forest/45 mb-1.5">
+                        Nombre
+                      </label>
+                      <input
+                        id="story-name"
+                        type="text"
+                        value={storyName}
+                        onChange={(event) => setStoryName(event.target.value)}
+                        disabled={storyStatus === 'sending' || storyStatus === 'sent'}
+                        placeholder="Tu nombre"
+                        className="w-full rounded-xl border border-serana-forest/10 bg-white px-4 py-3 text-sm text-serana-forest placeholder-serana-forest/35 outline-none transition focus:border-serana-ochre"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="story-message" className="block text-[10px] uppercase tracking-widest text-serana-forest/45 mb-1.5">
+                        Historia, reseña o testimonio
+                      </label>
+                      <textarea
+                        id="story-message"
+                        required
+                        rows={5}
+                        value={storyMessage}
+                        onChange={(event) => setStoryMessage(event.target.value)}
+                        disabled={storyStatus === 'sending' || storyStatus === 'sent'}
+                        placeholder="Escribe aquí cómo ha sido tu experiencia con Serana"
+                        className="w-full resize-none rounded-xl border border-serana-forest/10 bg-white px-4 py-3 text-sm leading-relaxed text-serana-forest placeholder-serana-forest/35 outline-none transition focus:border-serana-ochre"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={storyStatus === 'sending' || storyStatus === 'sent'}
+                    className="mt-4 w-full rounded-full bg-serana-forest px-5 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-serana-cream transition hover:bg-serana-olive disabled:opacity-70 flex items-center justify-center gap-2"
+                  >
+                    {storyStatus === 'sending' ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Enviando</>
+                    ) : storyStatus === 'sent' ? (
+                      <><Check className="w-4 h-4" /> Historia recibida</>
+                    ) : (
+                      <><Send className="w-4 h-4" /> Enviar historia</>
+                    )}
+                  </button>
+
+                  <p className={`mt-3 text-[11px] leading-relaxed ${storyStatus === 'error' ? 'text-rose-700' : 'text-serana-forest/55'}`}>
+                    {storyStatus === 'error'
+                      ? 'No pudimos guardar tu historia. Revisa el texto e intenta de nuevo.'
+                      : storyStatus === 'sent'
+                        ? 'Gracias. Tu historia queda en revisión antes de publicarse.'
+                        : 'La recibimos como historia o reseña para revisarla desde el equipo Serana.'}
+                  </p>
+                </form>
+
+                <div className="space-y-3">
+                  {publishedStories.slice(0, 2).map((story) => (
+                    <article key={story.id} className="rounded-[1.25rem] border border-serana-forest/10 bg-serana-cream/65 p-4">
+                      <div className="flex items-center gap-1 text-serana-ochre mb-3" aria-label={`${story.rating} de 5 estrellas`}>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Star key={index} className={`w-3 h-3 ${index < story.rating ? 'fill-current' : ''}`} />
+                        ))}
+                      </div>
+                      <p className="text-sm text-serana-forest/70 font-light leading-relaxed line-clamp-4">
+                        {story.message}
+                      </p>
+                      <p className="mt-3 text-[10px] uppercase tracking-[0.18em] font-bold text-serana-forest/45">
+                        {story.full_name}
+                      </p>
+                    </article>
+                  ))}
+                  <a
+                    href="https://www.instagram.com/serana.ac"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 px-5 py-3 border border-serana-forest/20 text-serana-forest rounded-full font-sans font-medium tracking-widest text-[10px] uppercase hover:bg-serana-forest/5 transition-all"
+                  >
+                    Síguenos · @serana.ac
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -505,12 +652,12 @@ export default function CommunityPage() {
                   Ver el menú
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link
-                  to="/about"
+                <a
+                  href="#historias-serana"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-serana-cream/30 text-serana-cream rounded-full font-sans font-medium tracking-widest text-[11px] uppercase hover:bg-serana-cream/10 transition-all"
                 >
                   Comparte tu historia
-                </Link>
+                </a>
               </div>
             </div>
           </div>
