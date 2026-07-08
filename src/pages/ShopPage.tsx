@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import SectionDivider from '../components/SectionDivider';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
-import { AlertTriangle, ArrowRight, Clock, LayoutGrid, List as ListIcon, Scissors, Search, SlidersHorizontal } from 'lucide-react';
+import { ArrowRight, Clock, LayoutGrid, List as ListIcon, Search } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { SerenaIcons, SerenaMark, type SerenaIconName } from '../components/SeranaIcons';
 import { normalizeSearch } from '../lib/search';
@@ -115,60 +115,6 @@ function DispatchNotice() {
           <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </div>
-    </section>
-  );
-}
-
-function MenuGuidance({ activeCategory }: { activeCategory: Category }) {
-  const showCombos = activeCategory === 'all' || activeCategory === 'combos';
-  const showFresh =
-    activeCategory === 'all' ||
-    activeCategory === 'frutas-picadas' ||
-    activeCategory === 'verduras-picadas' ||
-    activeCategory === 'mercado-fresco';
-
-  if (!showCombos && !showFresh) return null;
-
-  return (
-    <section className="grid gap-4 md:grid-cols-2 mb-10">
-      {showCombos && (
-        <div className="rounded-2xl border border-serana-forest/10 bg-serana-forest text-serana-cream p-5">
-          <div className="flex items-center gap-2 text-serana-ochre mb-3">
-            <SlidersHorizontal className="w-4 h-4" />
-            <span className="text-[10px] uppercase tracking-[0.28em] font-bold">Combos y kits</span>
-          </div>
-          <h3 className="font-serif text-2xl leading-tight mb-3">Productos semipersonalizables</h3>
-          <p className="text-sm text-serana-cream/72 leading-relaxed font-light">
-            Algunos elementos vienen preseleccionados y otros se eligen según disponibilidad. Las restricciones de cantidad por línea gourmet, tradicional o repetidos se confirman al armar el pedido.
-          </p>
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            {['Base', 'Gourmet', 'Tradicional'].map((item) => (
-              <span key={item} className="rounded-xl bg-white/10 px-3 py-2 text-center text-[9px] uppercase tracking-[0.18em] font-bold">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {showFresh && (
-        <div className="rounded-2xl border border-serana-forest/10 bg-white/75 p-5">
-          <div className="flex items-center gap-2 text-serana-olive mb-3">
-            <Scissors className="w-4 h-4" />
-            <span className="text-[10px] uppercase tracking-[0.28em] font-bold">Mercado fresco</span>
-          </div>
-          <h3 className="font-serif text-2xl text-serana-forest leading-tight mb-3">Fresco, picado o sin picar</h3>
-          <p className="text-sm text-serana-forest/68 leading-relaxed font-light">
-            Frutas picadas y verduras picadas tienen botones propios. Mercado fresco reúne el fruver sin picar, tal como lo pidieron.
-          </p>
-          <div className="mt-4 flex items-start gap-2 rounded-xl bg-serana-cream/80 p-3 text-serana-forest/62">
-            <AlertTriangle className="w-4 h-4 text-serana-terracotta shrink-0 mt-0.5" />
-            <p className="text-[11px] leading-relaxed">
-              Las presentaciones, porciones, ingredientes y observaciones aparecen dentro de cada ficha cuando vienen en la lista de precios.
-            </p>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
@@ -430,8 +376,6 @@ export default function ShopPage() {
             </div>
           </div>
         </div>
-
-        <MenuGuidance activeCategory={activeCategory} />
 
         {/* ── Featured strip (only when "Todos" + no search) ─────────────── */}
         {featured.length > 0 && <FeaturedStrip products={featured} allProducts={products} />}
