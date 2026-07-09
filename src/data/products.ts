@@ -1615,7 +1615,6 @@ const baseProducts: Product[] = [
     benefits: ['Familiar', 'Gran ahorro'],
     healthBenefit: 'Un mercado saludable para compartir entre familia y amigos.',
     portions: 118,
-    observation: 'Incluye opciones para escoger sopas o cremas, frutas picadas, verduras picadas, ensaladas gourmet, ensaladas tradicionales, jugos saludables o jugo de naranja, frutos secos y frutas de mano por unidad.',
     ingredients: [
       '5 sopas o cremas',
       '6 baby bowls de fruta x 250 gr',
