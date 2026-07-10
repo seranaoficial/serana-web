@@ -5,6 +5,7 @@ export const COMBO_PAYLOAD_MARKER = '::serana_combo_payload::';
 type ComboOptionSource = {
   categories?: string[];
   slugs?: string[];
+  excludeSlugs?: string[];
 };
 
 export type ComboGroupDefinition = {
@@ -59,6 +60,14 @@ const FRUIT_GROUP: ComboGroupDefinition = {
   max: 3,
   unitLabel: 'opciones',
   source: { categories: ['frutas-picadas'] },
+};
+
+const FRUIT_GROUP_TARDES: ComboGroupDefinition = {
+  ...FRUIT_GROUP,
+  source: {
+    categories: FRUIT_GROUP.source.categories,
+    excludeSlugs: ['baby-bowl-amarillos', 'baby-bowl-berry'],
+  },
 };
 
 const BERRY_MIX_LIMIT = {
@@ -243,7 +252,7 @@ export const COMBO_DEFINITIONS: ComboDefinition[] = [
   },
   {
     slug: 'combo-tardes',
-    groups: [withLimit(FRUIT_GROUP, 1)],
+    groups: [withLimit(FRUIT_GROUP_TARDES, 1)],
     fixedItems: [
       'Yogurt griego',
       'Berry mix',
@@ -349,6 +358,10 @@ export function resolveComboGroups(definition: ComboDefinition, products: Produc
     for (const slug of group.source.slugs ?? []) {
       const product = bySlug.get(slug);
       if (product) optionMap.set(product.id, product);
+    }
+
+    for (const excluded of group.source.excludeSlugs ?? []) {
+      optionMap.delete(excluded);
     }
 
     const slugOrder = new Map((group.source.slugs ?? []).map((slug, index) => [slug, index]));
