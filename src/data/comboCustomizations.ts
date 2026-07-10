@@ -93,6 +93,7 @@ const TRADITIONAL_SALAD_GROUP: ComboGroupDefinition = {
   helper: 'Bowls tradicionales disponibles',
   max: 1,
   maxPerOption: 1,
+  unitLabel: 'opciones',
   source: { categories: ['ensaladas-tradicionales'] },
 };
 
@@ -125,6 +126,7 @@ const DRINK_GROUP: ComboGroupDefinition = {
   helper: 'Jugos funcionales o naranja',
   max: 1,
   maxPerOption: 1,
+  unitLabel: 'opciones',
   source: {
     slugs: ['jugo-verde', 'batido-circulacion', 'batido-detox', 'jugo-naranja'],
   },
