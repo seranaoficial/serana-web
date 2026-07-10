@@ -122,11 +122,13 @@ const HAND_FRUIT_GROUP: ComboGroupDefinition = {
 const HAND_FRUIT_GROUP_FAMILIAR: ComboGroupDefinition = {
   ...HAND_FRUIT_GROUP,
   source: {
-    slugs: HAND_FRUIT_GROUP.source.slugs.filter(
+    slugs: HAND_FRUIT_GROUP.source.slugs!.filter(
       (slug) => slug !== 'banano-x-1-5-kg' && slug !== 'kiwi-libra',
     ),
   },
 };
+
+const HAND_FRUIT_GROUP_PERSONAL: ComboGroupDefinition = HAND_FRUIT_GROUP_FAMILIAR;
 
 const DRINK_GROUP: ComboGroupDefinition = {
   id: 'drinks',
@@ -199,7 +201,7 @@ export const COMBO_DEFINITIONS: ComboDefinition[] = [
       withLimit(VEGETABLE_GROUP, 3),
       oneEach(GOURMET_SALAD_GROUP),
       oneEach(TRADITIONAL_SALAD_GROUP),
-      withLimit(HAND_FRUIT_GROUP, 6),
+      withLimit(HAND_FRUIT_GROUP_PERSONAL, 6),
       oneEach(DRINK_GROUP),
     ],
     fixedItems: [
