@@ -3012,7 +3012,6 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Fresco"
     ],
     "healthBenefit": "La porcion perfecta para tu mercado saludable quincenal",
-    "observation": "Cada combo personal debe tener todas las opciones desplegables es decir: poner todas las opciones de sopas prelistas para que escoja un maximo de 3, opcion de todas las frutas picadas x 250 gr para que escoja un maximo de 3, opcion de todas las verduras picadas para que escoja un maximo de 3, 1 opcion de ensalada gourmet, una opcion de ensalada tradicional, 1 opcion de todos los jugos saludables x5 o escojer jugo de naranja x 6. el resto del mercado viene ya predeterminado y seleccionado rigurosamente por nosotros. pd: la persona puede escoger entre frutos secos mix premium, semillas de calabaza, almendras, semillas de chia. en las frutas de mano (maximo 6) darle la opcion de escoger entre las siguientes frutas: granadilla, manzana, peras, mandarina, durazno (poner ese pliego de opciones tambien).",
     "portions": 84,
     "ingredients": [
       "3 und sopas o cremas",
