@@ -3147,7 +3147,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Fresco"
     ],
     "healthBenefit": "Tambien hay opiones para tu peludito, balanceado y testeado con productos aptos para el consumo animal.",
-    "observation": "todo esta predeterinado en este combo",
+    "observation": "todo esta predeterminado en este combo",
     "portions": 34,
     "ingredients": [
       "2 baby bowl mango maduro x 200 gr",
