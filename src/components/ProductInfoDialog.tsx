@@ -27,7 +27,7 @@ export default function ProductInfoDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { selectedVariant, setSelectedVariantLabel, selectedCut, setSelectedCut, selectedRipeness, setSelectedRipeness, productForCart } = useSelectedVariant(product);
+  const { selectedVariant, setSelectedVariantLabel, selectedVariants, setSelectedVariant, productForCart } = useSelectedVariant(product);
   const isCombo = product ? Boolean(getComboDefinition(product)) : false;
 
   // Combine the primary photo + gallery (when present) into one ordered
@@ -241,54 +241,33 @@ export default function ProductInfoDialog({
                     </section>
                   ) : null}
 
-                  {!isCombo && product.cortes && product.cortes.length > 0 && (
-                    <section className="rounded-2xl border border-serana-forest/10 bg-white/70 p-4">
-                      <SectionTitle icon={Scissors} title="Tipo de corte" />
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {product.cortes.map((option) => {
-                          const active = selectedCut === option;
-                          return (
-                            <button
-                              key={option}
-                              type="button"
-                              onClick={() => setSelectedCut(option)}
-                              className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] transition-colors ${
-                                active
-                                  ? 'border-serana-forest bg-serana-forest text-serana-cream'
-                                  : 'border-serana-forest/12 bg-serana-cream/70 text-serana-forest/68 hover:border-serana-forest/35'
-                              }`}
-                            >
-                              {option}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </section>
-                  )}
-
-                  {!isCombo && product.maduracion && product.maduracion.length > 0 && (
-                    <section className="rounded-2xl border border-serana-forest/10 bg-white/70 p-4">
-                      <SectionTitle icon={Apple} title="Maduración" />
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {product.maduracion.map((option) => {
-                          const active = selectedRipeness === option;
-                          return (
-                            <button
-                              key={option}
-                              type="button"
-                              onClick={() => setSelectedRipeness(option)}
-                              className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] transition-colors ${
-                                active
-                                  ? 'border-serana-forest bg-serana-forest text-serana-cream'
-                                  : 'border-serana-forest/12 bg-serana-cream/70 text-serana-forest/68 hover:border-serana-forest/35'
-                              }`}
-                            >
-                              {option}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </section>
+                  {!isCombo && getEffectiveVariants(product).length > 0 && (
+                    <>
+                      {getEffectiveVariants(product).map(([key, options]) => (
+                        <section key={key} className="rounded-2xl border border-serana-forest/10 bg-white/70 p-4">
+                          <SectionTitle icon={getVariantIcon(key)} title={getVariantLabel(key)} />
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {options.map((option) => {
+                              const active = selectedVariants[key] === option;
+                              return (
+                                <button
+                                  key={option}
+                                  type="button"
+                                  onClick={() => setSelectedVariant(key, option)}
+                                  className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] transition-colors ${
+                                    active
+                                      ? 'border-serana-forest bg-serana-forest text-serana-cream'
+                                      : 'border-serana-forest/12 bg-serana-cream/70 text-serana-forest/68 hover:border-serana-forest/35'
+                                  }`}
+                                >
+                                  {option}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </section>
+                      ))}
+                    </>
                   )}
 
                   {hasProductNotes && (
@@ -367,23 +346,23 @@ function SectionTitle({ icon: Icon, title }: { icon: LucideIcon; title: string }
 
 function useSelectedVariant(product: Product | null) {
   const [selectedVariantLabel, setSelectedVariantLabel] = useState(product?.variants?.[0]?.label ?? '');
-  const [selectedCut, setSelectedCut] = useState<string | null>(null);
-  const [selectedRipeness, setSelectedRipeness] = useState<string | null>(null);
+  /**
+   * Generic map of variant key → selected value.
+   * Populated from `product.variantes` (new model) or `product.cortes` / `product.maduracion` (legacy).
+   */
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, string | null>>({});
 
   useEffect(() => {
     setSelectedVariantLabel(product?.variants?.[0]?.label ?? '');
-    setSelectedCut(null);
-    setSelectedRipeness(null);
+    setSelectedVariants({});
   }, [product?.id, product?.variants]);
 
   if (!product) {
     return {
       selectedVariant: null,
       setSelectedVariantLabel,
-      selectedCut,
-      setSelectedCut,
-      selectedRipeness,
-      setSelectedRipeness,
+      selectedVariants,
+      setSelectedVariant: (_key: string, _value: string | null) => {},
       productForCart: {} as Product,
     };
   }
@@ -391,12 +370,16 @@ function useSelectedVariant(product: Product | null) {
   const selectedVariant =
     product.variants?.find((variant) => variant.label === selectedVariantLabel) ?? product.variants?.[0] ?? null;
 
-  // Build customizations text from selected cut + ripeness (if any).
-  // Only emitted for non-combo individual products (mango, fresa picada, etc.)
-  // — combo personalizations flow through comboSelections instead.
+  // Build customizations text from all selected variants.
+  // Each key renders as "Label: value" (e.g. "Corte: cubos", "Tipo: blanco").
+  // Only emitted for non-combo individual products — combo personalizations flow
+  // through comboSelections instead.
+  const variantEntries = getEffectiveVariants(product);
   const customizationsParts: string[] = [];
-  if (selectedCut) customizationsParts.push(`Corte: ${selectedCut}`);
-  if (selectedRipeness) customizationsParts.push(`Maduración: ${selectedRipeness}`);
+  for (const [key, options] of variantEntries) {
+    const value = selectedVariants[key];
+    if (value) customizationsParts.push(`${getVariantLabel(key)}: ${value}`);
+  }
   const customizationsText = customizationsParts.length > 0 ? customizationsParts.join('\n') : undefined;
 
   const productForCart = selectedVariant
@@ -414,12 +397,52 @@ function useSelectedVariant(product: Product | null) {
   return {
     selectedVariant,
     setSelectedVariantLabel,
-    selectedCut,
-    setSelectedCut,
-    selectedRipeness,
-    setSelectedRipeness,
+    selectedVariants,
+    setSelectedVariant: (key: string, value: string | null) =>
+      setSelectedVariants((prev) => ({ ...prev, [key]: value })),
     productForCart,
   };
+}
+
+/**
+ * Returns the effective list of variant groups for a product.
+ * Reads from `product.variantes` if present, otherwise falls back to legacy
+ * `product.cortes` and `product.maduracion` mapped to their canonical keys.
+ */
+function getEffectiveVariants(product: Product): Array<[string, string[]]> {
+  if (product.variantes && Object.keys(product.variantes).length > 0) {
+    return Object.entries(product.variantes).filter(([, opts]) => Array.isArray(opts) && opts.length > 0);
+  }
+  const legacy: Array<[string, string[]]> = [];
+  if (product.cortes && product.cortes.length > 0) legacy.push(['corte', product.cortes]);
+  if (product.maduracion && product.maduracion.length > 0) legacy.push(['maduracion', product.maduracion]);
+  return legacy;
+}
+
+/** Human-readable label for a variant key. */
+const VARIANT_LABELS: Record<string, string> = {
+  corte: 'Corte',
+  cortes: 'Corte',
+  maduracion: 'Maduración',
+  tipo: 'Tipo',
+  color: 'Color',
+};
+
+function getVariantLabel(key: string): string {
+  return VARIANT_LABELS[key] ?? key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+/** Icon for a variant key. */
+const VARIANT_ICONS: Record<string, LucideIcon> = {
+  corte: Scissors,
+  cortes: Scissors,
+  maduracion: Apple,
+  tipo: Info,
+  color: Info,
+};
+
+function getVariantIcon(key: string): LucideIcon {
+  return VARIANT_ICONS[key] ?? Info;
 }
 
 function slugifyVariant(label: string) {

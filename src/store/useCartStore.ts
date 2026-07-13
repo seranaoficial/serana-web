@@ -15,8 +15,16 @@ export interface Product {
   observation?: string;
   portions?: string | number;
   ingredients?: string[];
+  /** @deprecated Use `variantes` instead. Kept for backward compatibility — will be removed once all profiles migrate. */
   cortes?: string[];
+  /** @deprecated Use `variantes` instead. Kept for backward compatibility — will be removed once all profiles migrate. */
   maduracion?: string[];
+  /**
+   * Multiple option groups shown in the product modal.
+   * Each key renders a separate toggle block (e.g. { corte: [...], tipo: [...] }).
+   * Replaces the legacy single-purpose `cortes` and `maduracion` fields.
+   */
+  variantes?: Record<string, string[]>;
   variants?: Array<{
     label: string;
     price: number;

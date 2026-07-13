@@ -12,6 +12,7 @@ export type PriceListProfile = Partial<Pick<Product,
   | 'ingredients'
   | 'cortes'
   | 'maduracion'
+  | 'variantes'
   | 'variants'
 >>;
 
