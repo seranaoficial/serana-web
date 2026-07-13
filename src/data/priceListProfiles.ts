@@ -1585,7 +1585,11 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Hidratante"
     ],
     "healthBenefit": "Contiene mucha agua: aporta hidratacion celular, desinflama y mejora la piel.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (rodajas, cubos, media luna) darle al cliente dos opciones extra en esta verdura (con cascara/sin cascara) DE CADA GRUPO DE OPCIONES (tipo de corte/sin cascara con cascara)",
+    "observation": "",
+    "variantes": {
+      "corte": ["rodajas", "cubos", "media luna"],
+      "extra": ["Con cáscara", "Sin cáscara"]
+    },
     "portions": 4,
     "variants": [
       {

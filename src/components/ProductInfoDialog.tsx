@@ -422,6 +422,7 @@ const VARIANT_LABELS: Record<string, string> = {
   maduracion: 'Maduración',
   tipo: 'Tipo',
   color: 'Color',
+  extra: 'Extra',
 };
 
 function getVariantLabel(key: string): string {
