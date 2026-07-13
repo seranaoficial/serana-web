@@ -832,6 +832,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Vitamina C",
       "Sistema inmune"
     ],
+    "observation": "",
     "healthBenefit": "Ayuda al sistema inmune por su alto contenido de vitamina C y apoya la salud digestiva.",
     "cortes": ["cubos", "bastones"],
     "maduracion": ["verde", "pintón", "maduro"],
