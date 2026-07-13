@@ -1280,7 +1280,11 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Sistema inmune"
     ],
     "healthBenefit": "Rica en fibra probiotica, mejora la bicrobiota intestinal y apoya a sistema inmune",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, media luna)",
+    "observation": "",
+    "cortes": [
+      "media lunas",
+      "julianas"
+    ],
     "portions": 4,
     "variants": [
       {
