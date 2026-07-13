@@ -846,6 +846,29 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       }
     ]
   },
+  "fresa-picada": {
+    "name": "Fresa picada",
+    "price": 16900,
+    "description": "Contiene vitamina C (colageno) ademas de ser una fruta con alto contenido de agua y es un antioxidante natural.",
+    "category": "frutas-picadas",
+    "benefits": [
+      "Antioxidantes",
+      "Fresca"
+    ],
+    "healthBenefit": "Contiene vitamina C (colageno) ademas de ser una fruta con alto contenido de agua y es un antioxidante natural.",
+    "cortes": ["cuartos", "tajadas", "mitades", "enteras"],
+    "portions": 4,
+    "variants": [
+      {
+        "label": "500 gr",
+        "price": 16900
+      },
+      {
+        "label": "250 gr",
+        "price": 10500
+      }
+    ]
+  },
   "mora": {
     "name": "Mora destallada",
     "price": 15500,
@@ -1167,7 +1190,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Hidratante"
     ],
     "healthBenefit": "Aporta hidratacion celular, bajo en calorias asi que es ideal para etapa de definicion o bajar de peso.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, rodajas, cubos, bastones)",
+    "cortes": ["julianas", "rodajas", "cubos", "bastones"],
     "portions": 4,
     "variants": [
       {
@@ -1189,7 +1212,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Hidratante"
     ],
     "healthBenefit": "Aporta hidratacion celular, bajo en calorias asi que es ideal para etapa de definicion o bajar de peso.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, rodajas, cubos, bastones)",
+    "cortes": ["julianas", "rodajas", "cubos", "bastones"],
     "portions": 4,
     "variants": [
       {
@@ -1212,7 +1235,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Sistema inmune"
     ],
     "healthBenefit": "Es el alimento con mayor contenido de vitamina C, poderoso para el sistema inmune y la piel.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, rodajas, cubos, bastones)",
+    "cortes": ["julianas", "rodajas", "cubos", "bastones"],
     "portions": 4,
     "variants": [
       {
@@ -1234,7 +1257,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Sistema inmune"
     ],
     "healthBenefit": "Antibacteriana natural, mejora la salud intestinal y proteje el sistema inmune.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, rodajas, cubos)",
+    "cortes": ["julianas", "rodajas", "cubos"],
     "portions": 4,
     "variants": [
       {
@@ -1257,7 +1280,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Antiinflamatoria"
     ],
     "healthBenefit": "Contiene mas antioxidantes que la cebolla blanca, mejora la salud cardiovascular y es antiinflamatoria.",
-    "observation": "el cliente tiene la opcion de escojer el corte dales la opciones (julianas, rodajas, cubos)",
+    "cortes": ["julianas", "rodajas", "cubos"],
     "portions": 4,
     "variants": [
       {
@@ -2313,7 +2336,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Antiinflamatoria"
     ],
     "healthBenefit": "Es antioxidante, antiinflamatorio y protege el corazon",
-    "observation": "añadir 3 opciones de maduracion (verde/pinton/maduro)",
+    "maduracion": ["verde", "pintón", "maduro"],
     "portions": 3,
     "ingredients": [
       "presentacion LIBRA"
