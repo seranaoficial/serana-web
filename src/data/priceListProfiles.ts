@@ -846,29 +846,6 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       }
     ]
   },
-  "fresa-picada": {
-    "name": "Fresa picada",
-    "price": 16900,
-    "description": "Contiene vitamina C (colageno) ademas de ser una fruta con alto contenido de agua y es un antioxidante natural.",
-    "category": "frutas-picadas",
-    "benefits": [
-      "Antioxidantes",
-      "Fresca"
-    ],
-    "healthBenefit": "Contiene vitamina C (colageno) ademas de ser una fruta con alto contenido de agua y es un antioxidante natural.",
-    "cortes": ["cuartos", "tajadas", "mitades", "enteras"],
-    "portions": 4,
-    "variants": [
-      {
-        "label": "500 gr",
-        "price": 16900
-      },
-      {
-        "label": "250 gr",
-        "price": 10500
-      }
-    ]
-  },
   "mora": {
     "name": "Mora destallada",
     "price": 15500,
@@ -924,7 +901,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
       "Vitamina C"
     ],
     "healthBenefit": "Contiene vitamina C (colageno) ademas de ser una fruta con alto contenido de agua y es un antioxidante natural.",
-    "observation": "el cliente tambien tiene la opcion de que corte le gustaria en esta fruta especifica (cuartos/tajadas/mitades/enteras)",
+    "cortes": ["cuartos", "tajadas", "mitades", "enteras"],
     "portions": 4,
     "variants": [
       {

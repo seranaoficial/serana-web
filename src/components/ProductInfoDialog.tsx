@@ -29,10 +29,6 @@ export default function ProductInfoDialog({
 }) {
   const { selectedVariant, setSelectedVariantLabel, selectedCut, setSelectedCut, selectedRipeness, setSelectedRipeness, productForCart } = useSelectedVariant(product);
   const isCombo = product ? Boolean(getComboDefinition(product)) : false;
-  if (product) {
-    // eslint-disable-next-line no-console
-    console.log('[modal-product]', { id: product.id, name: product.name, cortes: product.cortes, hasCortes: Boolean(product.cortes && product.cortes.length), isCombo });
-  }
 
   // Combine the primary photo + gallery (when present) into one ordered
   // list so the aside can carousel through every available image without
