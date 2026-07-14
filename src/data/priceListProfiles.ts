@@ -1137,8 +1137,8 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     "observation": "",
     "portions": 2,
     "variants": [
-      { "label": "500GR", "price": 13500 },
-      { "label": "250GR", "price": 8500 }
+      { "label": "500GR", "price": 14500 },
+      { "label": "250GR", "price": 9000 }
     ]
   },
   "baby-bowl-berry": {
@@ -1153,8 +1153,8 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     "observation": "",
     "portions": 2,
     "variants": [
-      { "label": "500GR", "price": 14500 },
-      { "label": "250GR", "price": 9000 }
+      { "label": "500GR", "price": 53900 },
+      { "label": "250GR", "price": 33000 }
     ]
   },
   "espinaca-criolla-deshojada-x300-gr": {
