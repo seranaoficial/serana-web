@@ -52,6 +52,8 @@ const initialForm: FormState = {
 
 const STORAGE_KEY = 'serana:checkout:contact';
 
+const DELIVERY_FEE_COP = 12500;
+
 const STEPS = [
   { id: 1, label: 'Resumen', Icon: Tag },
   { id: 2, label: 'Entrega', Icon: MapPin },
@@ -152,7 +154,8 @@ export default function CheckoutPage() {
   const step2Valid = contactValid && addressValid;
 
   const discount = couponApplied?.valid ? couponApplied.discount_amount : 0;
-  const totalToPay = Math.max(subtotal - discount, 0);
+  const deliveryFee = DELIVERY_FEE_COP; // TODO: change to conditional when pickup/mesa types are added
+  const totalToPay = Math.max(subtotal - discount + deliveryFee, 0);
   const minimumOrderMet = meetsMinimumOrder(totalToPay);
   const minimumOrderMissing = getMinimumOrderMissing(totalToPay);
 
@@ -212,6 +215,8 @@ export default function CheckoutPage() {
       customer_name: form.fullName.trim(),
       customer_email: form.email.trim() || undefined,
       delivery_address: fullAddress,
+      delivery_fee: deliveryFee,
+      total_amount: totalToPay,
       type: 'domicilio' as const,
       payment_method: form.paymentMethod,
       payment_status: 'pendiente' as const,
@@ -692,7 +697,7 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between text-gray-600 font-light">
                   <span>Domicilio</span>
-                  <span className="text-serana-olive">Por confirmar</span>
+                  <span className="text-serana-olive">{COP(DELIVERY_FEE_COP)}</span>
                 </div>
                 <div className="flex justify-between text-xl font-serif text-serana-forest pt-3 border-t border-serana-forest/10">
                   <span>Total</span>

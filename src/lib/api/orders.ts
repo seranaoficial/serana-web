@@ -20,6 +20,8 @@ export type CreateOrderPayload = {
   customer_name?: string;
   customer_email?: string;
   delivery_address?: string;
+  delivery_fee?: number;
+  total_amount?: number;
   type?: OrderType;
   payment_method?: PaymentMethod;
   payment_status?: 'pendiente' | 'parcial' | 'pagado';
