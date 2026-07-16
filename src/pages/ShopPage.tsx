@@ -101,7 +101,7 @@ function DispatchNotice() {
           <div>
             <p className="text-[10px] uppercase tracking-[0.3em] text-serana-terracotta font-bold mb-1">Despachos</p>
             <p className="text-sm text-serana-forest/70 leading-relaxed">
-              Recibimos pedidos de martes a sábado. La disponibilidad y la franja de entrega se confirman por WhatsApp antes del despacho.
+              Pides cuando quieras, de 8 a.m. a 8 p.m., todos los días. Te entregamos de martes a viernes, con un día de anticipación, en tres franjas: 11 a.m. – 1 p.m., 1 – 3 p.m. o 6 – 8 p.m.. Confirmamos contigo por WhatsApp antes de cada despacho.
             </p>
           </div>
         </div>
