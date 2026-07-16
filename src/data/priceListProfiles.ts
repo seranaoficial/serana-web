@@ -647,7 +647,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     ]
   },
   "batido-circulacion": {
-    "name": "Batido circulacion x5",
+    "name": "Batido circulacion x 5",
     "price": 18900,
     "description": "Mejora la circulacuion sanguinea, es un preentreno natural y ayuda a mejorar la resistencia fisica.",
     "category": "bebidas",
@@ -665,7 +665,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     ]
   },
   "batido-detox": {
-    "name": "Batido detox antiestres X5",
+    "name": "Batido detox antiestres x 5",
     "price": 18900,
     "description": "Tiene un efecto calmante, disminuye la sensacion de pesadez y es perfecto para el estres, ansiedad y mala digestion.",
     "category": "bebidas",
@@ -807,7 +807,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     ]
   },
   "jugo-naranja": {
-    "name": "Jugo de naranja x6",
+    "name": "Jugo de naranja x 5",
     "price": 39900,
     "description": "Contiene Vitamina C y es refrescante.",
     "category": "bebidas",
