@@ -807,7 +807,7 @@ export const PRICE_LIST_PROFILES: Record<string, PriceListProfile> = {
     ]
   },
   "jugo-naranja": {
-    "name": "Jugo de naranja x 5",
+    "name": "Jugo de naranja x 3",
     "price": 39900,
     "description": "Contiene Vitamina C y es refrescante.",
     "category": "bebidas",
